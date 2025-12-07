@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -28,7 +29,13 @@ import { SuccessMessage } from "./success-message";
 import { login } from "@/actions/login";
 
 export function LoginForm() {
-  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const urlError =
+    searchParams.get("error") === "OAuthAccountNotLinked"
+      ? "An account with this email already exists."
+      : "";
+
+  const [error, setError] = useState<string | null>(urlError || null);
   const [success, setSuccess] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof LoginSchema>>({
@@ -48,7 +55,7 @@ export function LoginForm() {
       if (result?.error) {
         setError(result.error);
       } else {
-        setSuccess(result.success);
+        setSuccess("Login successful");
       }
     });
   };

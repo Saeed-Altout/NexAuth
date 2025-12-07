@@ -10,7 +10,7 @@ export const publicRoutes = ["/"];
  * These routes are not accessible to the public
  * @type {string[]}
  */
-export const authRoutes = ["/auth/login", "/auth/register"];
+export const authRoutes = ["/auth/login", "/auth/register", "/auth/error"];
 
 /**
  * The prefix for Api authentication routes

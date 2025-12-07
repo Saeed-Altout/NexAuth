@@ -8,11 +8,11 @@ export function SuccessMessage({
 }) {
   return (
     <div
-      className="bg-emerald-500/15 p-3 rounded-md flex items-center gap-x-2"
+      className="bg-emerald-500/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-emerald-500"
       {...props}
     >
       <CheckCircleIcon className="h-4 w-4" />
-      <span className="text-sm text-emerald-500 truncate">{message}</span>
+      <span className="truncate">{message}</span>
     </div>
   );
 }

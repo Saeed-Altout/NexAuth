@@ -50,7 +50,7 @@ export function RegisterForm() {
       if (result?.error) {
         setError(result.error);
       } else {
-        setSuccess(result.success);
+        setSuccess("Account created successfully!");
       }
     });
   };
