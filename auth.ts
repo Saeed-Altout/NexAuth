@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import authConfig from "@/auth.config";
 import { prisma } from "@/lib/prisma";
+import { getUserById } from "@/data/user";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -18,6 +19,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
   },
   callbacks: {
+    async signIn({ user, account }) {
+      // Allow other providers to sign in
+      if (account?.provider !== "credentials") return true;
+
+      if (!user || !user.id) return false;
+      const existingUser = await getUserById(user.id);
+
+      // Prevent sign in if user is not found or email is not verified
+      if (!existingUser || !existingUser.emailVerified) return false;
+
+      return true;
+    },
     async session({ token, session }) {
       if (session.user && token.sub) {
         session.user.id = token.sub;

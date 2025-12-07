@@ -6,6 +6,8 @@ import { AuthError } from "next-auth";
 import { signIn } from "@/auth";
 import { LoginSchema } from "@/schemas";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/tokens";
 
 export async function login(values: z.infer<typeof LoginSchema>) {
   const validatedFields = LoginSchema.safeParse(values);
@@ -16,11 +18,24 @@ export async function login(values: z.infer<typeof LoginSchema>) {
 
   const { email, password } = validatedFields.data;
 
+  const existingUser = await getUserByEmail(email);
+  if (!existingUser || !existingUser.password || !existingUser.email) {
+    return { error: "Email or password is incorrect!" };
+  }
+
+  if (!existingUser.emailVerified) {
+    const verificationToken = await generateVerificationToken(email);
+    if (!verificationToken) {
+      return { error: "Failed to send verification email!" };
+    }
+    return { success: "Verification email sent!" };
+  }
+
   try {
     await signIn("credentials", {
       email,
       password,
-      redirect: DEFAULT_LOGIN_REDIRECT,
+      redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
     if (error instanceof AuthError) {

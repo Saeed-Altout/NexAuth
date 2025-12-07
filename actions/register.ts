@@ -6,6 +6,7 @@ import bcryptjs from "bcryptjs";
 import { RegisterSchema } from "@/schemas";
 import { prisma } from "@/lib/prisma";
 import { getUserByEmail } from "@/data/user";
+import { generateVerificationToken } from "@/lib/tokens";
 
 export async function register(values: z.infer<typeof RegisterSchema>) {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -30,7 +31,12 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
 
   if (!user) return { error: "Failed to create user!" };
 
-  // TODO: Send verification email
+  const verificationToken = await generateVerificationToken(email);
+  if (!verificationToken)
+    return { error: "Failed to generate verification token!" };
+
+  console.log(verificationToken);
+  // await sendVerificationEmail(email, verificationToken.token);
 
   return { success: "Account created successfully!" };
 }

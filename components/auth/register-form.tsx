@@ -49,8 +49,9 @@ export function RegisterForm() {
       const result = await register(values);
       if (result?.error) {
         setError(result.error);
-      } else {
-        setSuccess("Account created successfully!");
+      }
+      if (result?.success) {
+        setSuccess(result.success);
       }
     });
   };

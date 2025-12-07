@@ -54,8 +54,9 @@ export function LoginForm() {
       const result = await login(values);
       if (result?.error) {
         setError(result.error);
-      } else {
-        setSuccess("Login successful");
+      }
+      if (result?.success) {
+        setSuccess(result.success);
       }
     });
   };
