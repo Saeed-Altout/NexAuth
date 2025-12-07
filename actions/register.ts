@@ -7,6 +7,7 @@ import { RegisterSchema } from "@/schemas";
 import { prisma } from "@/lib/prisma";
 import { getUserByEmail } from "@/data/user";
 import { generateVerificationToken } from "@/lib/tokens";
+import { sendVerificationEmail } from "@/lib/mail";
 
 export async function register(values: z.infer<typeof RegisterSchema>) {
   const validatedFields = RegisterSchema.safeParse(values);
@@ -35,8 +36,7 @@ export async function register(values: z.infer<typeof RegisterSchema>) {
   if (!verificationToken)
     return { error: "Failed to generate verification token!" };
 
-  console.log(verificationToken);
-  // await sendVerificationEmail(email, verificationToken.token);
+  await sendVerificationEmail(email, verificationToken.token);
 
   return { success: "Account created successfully!" };
 }
