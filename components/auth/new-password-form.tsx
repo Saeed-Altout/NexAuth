@@ -1,12 +1,13 @@
 "use client";
 
 import { useTransition, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { RegisterSchema } from "@/schemas";
+import { NewPasswordSchema } from "@/schemas";
 
 import {
   Form,
@@ -20,34 +21,39 @@ import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
 
 import { Wrapper } from "./wrapper";
-import { EmailInput } from "./email-input";
-import { NameInput } from "./name-input";
 import { PasswordInput } from "./password-input";
 import { ErrorMessage } from "./error-message";
 import { SuccessMessage } from "./success-message";
 
-import { register } from "@/actions/register";
+import { newPassword } from "@/actions/new-password";
 
-export function RegisterForm() {
+export function NewPasswordForm() {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
-  const form = useForm<z.infer<typeof RegisterSchema>>({
-    resolver: zodResolver(RegisterSchema),
+  const form = useForm<z.infer<typeof NewPasswordSchema>>({
+    resolver: zodResolver(NewPasswordSchema),
     defaultValues: {
-      name: "",
-      email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
+    if (!token) {
+      setError("Token is missing!");
+      return;
+    }
+
     setError("");
     setSuccess("");
 
     startTransition(async () => {
-      const result = await register(values);
+      const result = await newPassword(values, token);
       if (result?.error) {
         setError(result.error);
       }
@@ -59,38 +65,12 @@ export function RegisterForm() {
 
   return (
     <Wrapper
-      title="Create an account"
-      description="Enter your information below to create your account"
-      redirectTo={{ href: "/auth/login", label: "Already have an account ?" }}
+      title="Reset your password"
+      description="Enter your new password below to reset your password"
+      redirectTo={{ href: "/auth/login", label: "Back to login" }}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <NameInput disabled={isPending} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <EmailInput disabled={isPending} {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="password"
@@ -104,11 +84,24 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl>
+                  <PasswordInput disabled={isPending} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           {error && <ErrorMessage message={error} />}
           {success && <SuccessMessage message={success} />}
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending && <Spinner />}
-            Register
+            Reset Password
           </Button>
         </form>
       </Form>

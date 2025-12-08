@@ -6,8 +6,7 @@ export async function getVerificationTokenByEmail(email: string) {
       where: { email },
     });
     return verificationToken;
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 }
@@ -18,8 +17,7 @@ export async function getVerificationTokenByToken(token: string) {
       where: { token },
     });
     return verificationToken;
-  } catch (error) {
-    console.error(error);
+  } catch {
     return null;
   }
 }

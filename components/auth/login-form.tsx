@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useTransition, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -35,8 +36,8 @@ export function LoginForm() {
       ? "An account with this email already exists."
       : "";
 
-  const [error, setError] = useState<string | null>(urlError || null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [error, setError] = useState<string>(urlError || "");
+  const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -93,6 +94,14 @@ export function LoginForm() {
                 <FormControl>
                   <PasswordInput disabled={isPending} {...field} />
                 </FormControl>
+                <Button
+                  variant="link"
+                  size="sm"
+                  asChild
+                  className="mr-auto p-0"
+                >
+                  <Link href="/auth/reset">Forgot password?</Link>
+                </Button>
                 <FormMessage />
               </FormItem>
             )}
