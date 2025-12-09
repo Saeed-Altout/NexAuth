@@ -5,6 +5,7 @@ import authConfig from "@/auth.config";
 import { prisma } from "@/lib/prisma";
 import { getUserById } from "@/data/user";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
+import { getAccountByUserId } from "./data/account";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
@@ -46,23 +47,44 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (session.user && token.sub) {
         session.user.id = token.sub;
       }
+
       if (session.user && token.role) {
         session.user.role = token.role;
       }
 
       if (session.user) {
-        session.user.isTwoFactorEnabled = !!token.isTwoFactorEnabled;
+        session.user.isTwoFactorEnabled = Boolean(token.isTwoFactorEnabled);
+      }
+
+      if (session.user && token.name) {
+        session.user.name = token.name;
+      }
+
+      if (session.user && token.email) {
+        session.user.email = token.email;
+      }
+
+      if (session.user && token.isOAuth) {
+        session.user.isOAuth = Boolean(token.isOAuth);
       }
 
       return session;
     },
-    async jwt({ token, user }) {
-      if (user && "role" in user) {
-        token.role = user.role;
-      }
-      if (user && "isTwoFactorEnabled" in user) {
-        token.isTwoFactorEnabled = user.isTwoFactorEnabled;
-      }
+    async jwt({ token }) {
+      if (!token.sub) return token;
+
+      const user = await getUserById(token.sub);
+      if (!user) return token;
+
+      const account = await getAccountByUserId(user.id);
+
+      token.isOAuth = !!account;
+
+      token.role = user.role;
+      token.isTwoFactorEnabled = user.isTwoFactorEnabled;
+      token.name = user.name;
+      token.email = user.email;
+
       return token;
     },
   },

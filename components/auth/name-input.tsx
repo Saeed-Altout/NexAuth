@@ -1,4 +1,4 @@
-import { MailIcon } from "lucide-react";
+import { UserIcon } from "lucide-react";
 
 import {
   InputGroup,
@@ -11,7 +11,7 @@ export function NameInput({ ...props }: React.ComponentProps<"input">) {
     <InputGroup>
       <InputGroupInput type="text" placeholder="name" {...props} />
       <InputGroupAddon>
-        <MailIcon />
+        <UserIcon />
       </InputGroupAddon>
     </InputGroup>
   );

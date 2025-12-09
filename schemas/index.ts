@@ -1,3 +1,4 @@
+import { UserRole } from "@/lib/prisma/enums";
 import * as z from "zod";
 
 export const LoginSchema = z.object({
@@ -24,4 +25,19 @@ export const NewPasswordSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     path: ["confirmPassword"],
     message: "Passwords do not match",
+  });
+
+export const settingsSchema = z
+  .object({
+    name: z.string().min(1).optional(),
+    isTwoFactorEnabled: z.boolean().optional(),
+    role: z.nativeEnum(UserRole).optional(),
+    email: z.email().optional(),
+    password: z.string().optional(),
+    newPassword: z.string().optional(),
+    confirmNewPassword: z.string().optional(),
+  })
+  .refine((data) => data.newPassword === data.confirmNewPassword, {
+    path: ["confirmNewPassword"],
+    message: "New passwords do not match",
   });
