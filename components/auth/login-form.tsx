@@ -43,6 +43,8 @@ export function LoginForm() {
       ? "An account with this email already exists."
       : "";
 
+  const callbackUrl = searchParams.get("callbackUrl");
+
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
   const [error, setError] = useState<string>(urlError || "");
   const [success, setSuccess] = useState<string>("");
@@ -60,7 +62,7 @@ export function LoginForm() {
     setSuccess("");
 
     startTransition(async () => {
-      const result = await login(values);
+      const result = await login(values, callbackUrl!);
       if (result?.error) {
         setError(result.error);
       }

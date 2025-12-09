@@ -28,7 +28,14 @@ export default proxy((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return NextResponse.redirect(new URL("/auth/login", nextUrl));
+    let callBackUrl = nextUrl.pathname;
+    if (nextUrl.search) callBackUrl += nextUrl.search;
+
+    const encodedCallbackUrl = encodeURIComponent(callBackUrl);
+
+    return NextResponse.redirect(
+      new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+    );
   }
 
   return NextResponse.next();
