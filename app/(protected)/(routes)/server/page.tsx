@@ -1,14 +1,14 @@
 import { currentUser } from "@/lib/auth";
-import { UserModel } from "@/lib/prisma/models/User";
 
 import { UserInfo } from "@/components/auth/user-info";
+import { Session } from "next-auth";
 
 export default async function ServerPage() {
   const user = await currentUser();
 
   return (
     <UserInfo
-      user={user as UserModel}
+      user={user as Session["user"]}
       title="Server Component"
       description="This is a server component"
     />

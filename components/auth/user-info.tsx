@@ -6,7 +6,7 @@ import {
   UserIcon,
 } from "lucide-react";
 
-import { UserModel } from "@/lib/prisma/models/User";
+import { Session } from "next-auth";
 
 import {
   Card,
@@ -23,7 +23,7 @@ export function UserInfo({
   title,
   description,
 }: {
-  user: UserModel;
+  user: Session["user"];
   title: string;
   description: string;
 }) {

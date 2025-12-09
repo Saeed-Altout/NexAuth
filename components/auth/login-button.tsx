@@ -1,6 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { LoginForm } from "./login-form";
 
 export function LoginButton({
   mode = "redirect",
@@ -17,7 +19,14 @@ export function LoginButton({
   };
 
   if (mode === "modal") {
-    return <div>This is modal</div>;
+    return (
+      <Dialog>
+        <DialogTrigger asChild>{props.children}</DialogTrigger>
+        <DialogContent>
+          <LoginForm />
+        </DialogContent>
+      </Dialog>
+    );
   }
 
   return <div onClick={onClick} {...props} />;
