@@ -1,7 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { LoginForm } from "./login-form";
 
 export function LoginButton({
@@ -22,7 +29,13 @@ export function LoginButton({
     return (
       <Dialog>
         <DialogTrigger asChild>{props.children}</DialogTrigger>
-        <DialogContent>
+        <DialogContent className="p-0">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Login</DialogTitle>
+            <DialogDescription>
+              Login to your account to continue
+            </DialogDescription>
+          </DialogHeader>
           <LoginForm />
         </DialogContent>
       </Dialog>

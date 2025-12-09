@@ -9,7 +9,7 @@ export default function Home() {
         <p className="text-muted-foreground mb-6">
           This is a boilerplate for NextAuth with Next.js 16.
         </p>
-        <LoginButton>
+        <LoginButton mode="modal">
           <Button>Sign in</Button>
         </LoginButton>
       </div>
