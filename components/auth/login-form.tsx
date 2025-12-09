@@ -87,7 +87,7 @@ export function LoginForm() {
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
-          {!showCodeInput ? (
+          {!showCodeInput && (
             <>
               <FormField
                 control={form.control}
@@ -124,13 +124,15 @@ export function LoginForm() {
                 )}
               />
             </>
-          ) : (
+          )}
+          {showCodeInput && (
             <>
               <FormField
                 control={form.control}
                 name="code"
                 render={({ field }) => (
                   <FormItem className="flex justify-center">
+                    <FormLabel className="sr-only">Code</FormLabel>
                     <FormControl>
                       <InputOTP
                         maxLength={6}
