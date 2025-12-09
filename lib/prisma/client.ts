@@ -64,3 +64,13 @@ export type VerificationToken = Prisma.VerificationTokenModel
  * 
  */
 export type PasswordResetToken = Prisma.PasswordResetTokenModel
+/**
+ * Model TwoFactorToken
+ * 
+ */
+export type TwoFactorToken = Prisma.TwoFactorTokenModel
+/**
+ * Model TwoFactorConfirmation
+ * 
+ */
+export type TwoFactorConfirmation = Prisma.TwoFactorConfirmationModel
