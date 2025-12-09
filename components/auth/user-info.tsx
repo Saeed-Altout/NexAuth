@@ -37,7 +37,7 @@ export function UserInfo({
         <div className="space-y-2">
           <Item size="sm">
             <ItemMedia>
-              <HashIcon className="size-5" />
+              <HashIcon className="size-4" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{user.id}</ItemTitle>
@@ -45,7 +45,7 @@ export function UserInfo({
           </Item>
           <Item size="sm">
             <ItemMedia>
-              <UserIcon className="size-5" />
+              <UserIcon className="size-4" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{user.name}</ItemTitle>
@@ -53,7 +53,7 @@ export function UserInfo({
           </Item>
           <Item size="sm">
             <ItemMedia>
-              <MailIcon className="size-5" />
+              <MailIcon className="size-4" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{user.email}</ItemTitle>
@@ -61,7 +61,7 @@ export function UserInfo({
           </Item>
           <Item size="sm">
             <ItemMedia>
-              <LockIcon className="size-5" />
+              <LockIcon className="size-4" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>{user.role === "ADMIN" ? "Admin" : "User"}</ItemTitle>
@@ -69,7 +69,7 @@ export function UserInfo({
           </Item>
           <Item size="sm">
             <ItemMedia>
-              <ShieldCheckIcon className="size-5" />
+              <ShieldCheckIcon className="size-4" />
             </ItemMedia>
             <ItemContent>
               <ItemTitle>
