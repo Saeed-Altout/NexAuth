@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useTransition, useState } from "react";
+import { useTransition, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
+import { toast } from "sonner";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,8 +32,6 @@ import { Spinner } from "@/components/ui/spinner";
 import { Wrapper } from "./wrapper";
 import { EmailInput } from "./email-input";
 import { PasswordInput } from "./password-input";
-import { ErrorMessage } from "./error-message";
-import { SuccessMessage } from "./success-message";
 
 import { login } from "@/actions/login";
 
@@ -46,8 +45,6 @@ export function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl");
 
   const [showCodeInput, setShowCodeInput] = useState<boolean>(false);
-  const [error, setError] = useState<string>(urlError || "");
-  const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
@@ -58,22 +55,25 @@ export function LoginForm() {
   });
 
   const onSubmit = (values: z.infer<typeof LoginSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
       const result = await login(values, callbackUrl!);
       if (result?.error) {
-        setError(result.error);
+        toast.error(result.error);
       }
       if (result?.success) {
-        setSuccess(result.success);
+        toast.success(result.success);
       }
       if (result?.twoFactor) {
         setShowCodeInput(true);
       }
     });
   };
+
+  useEffect(() => {
+    if (urlError) {
+      toast.error(urlError);
+    }
+  }, [urlError]);
 
   return (
     <Wrapper
@@ -160,8 +160,6 @@ export function LoginForm() {
               />
             </>
           )}
-          {error && <ErrorMessage message={error} />}
-          {success && !showCodeInput && <SuccessMessage message={success} />}
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending && <Spinner />}
             {showCodeInput ? "Confirm" : "Login"}

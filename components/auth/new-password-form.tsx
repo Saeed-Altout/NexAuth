@@ -1,7 +1,7 @@
 "use client";
 
-import { useTransition, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useEffect, useTransition } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,17 +22,15 @@ import { Spinner } from "@/components/ui/spinner";
 
 import { Wrapper } from "./wrapper";
 import { PasswordInput } from "./password-input";
-import { ErrorMessage } from "./error-message";
-import { SuccessMessage } from "./success-message";
 
 import { newPassword } from "@/actions/new-password";
+import { toast } from "sonner";
 
 export function NewPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const router = useRouter();
 
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof NewPasswordSchema>>({
@@ -44,24 +42,23 @@ export function NewPasswordForm() {
   });
 
   const onSubmit = (values: z.infer<typeof NewPasswordSchema>) => {
-    if (!token) {
-      setError("Token is missing!");
-      return;
-    }
-
-    setError("");
-    setSuccess("");
-
+    if (!token) return;
     startTransition(async () => {
-      const result = await newPassword(values, token);
+      const result = await newPassword(values, token!);
       if (result?.error) {
-        setError(result.error);
+        toast.error(result.error);
       }
       if (result?.success) {
-        setSuccess(result.success);
+        toast.success(result.success);
       }
     });
   };
+
+  useEffect(() => {
+    if (!token) {
+      router.push("/auth/login");
+    }
+  }, [token, router]);
 
   return (
     <Wrapper
@@ -97,8 +94,6 @@ export function NewPasswordForm() {
               </FormItem>
             )}
           />
-          {error && <ErrorMessage message={error} />}
-          {success && <SuccessMessage message={success} />}
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending && <Spinner />}
             Reset Password

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useTransition } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -23,14 +23,11 @@ import { Wrapper } from "./wrapper";
 import { EmailInput } from "./email-input";
 import { NameInput } from "./name-input";
 import { PasswordInput } from "./password-input";
-import { ErrorMessage } from "./error-message";
-import { SuccessMessage } from "./success-message";
 
 import { register } from "@/actions/register";
+import { toast } from "sonner";
 
 export function RegisterForm() {
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -43,16 +40,13 @@ export function RegisterForm() {
   });
 
   const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
       const result = await register(values);
       if (result?.error) {
-        setError(result.error);
+        toast.error(result.error);
       }
       if (result?.success) {
-        setSuccess(result.success);
+        toast.success(result.success);
       }
     });
   };
@@ -104,8 +98,6 @@ export function RegisterForm() {
               </FormItem>
             )}
           />
-          {error && <ErrorMessage message={error} />}
-          {success && <SuccessMessage message={success} />}
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending && <Spinner />}
             Register

@@ -1,6 +1,6 @@
 "use client";
 
-import { useTransition, useState } from "react";
+import { useTransition } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -21,14 +21,11 @@ import { Spinner } from "@/components/ui/spinner";
 
 import { Wrapper } from "./wrapper";
 import { EmailInput } from "./email-input";
-import { ErrorMessage } from "./error-message";
-import { SuccessMessage } from "./success-message";
 
 import { reset } from "@/actions/reset";
+import { toast } from "sonner";
 
 export function ResetForm() {
-  const [error, setError] = useState<string>("");
-  const [success, setSuccess] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof ResetSchema>>({
     resolver: zodResolver(ResetSchema),
@@ -38,16 +35,13 @@ export function ResetForm() {
   });
 
   const onSubmit = (values: z.infer<typeof ResetSchema>) => {
-    setError("");
-    setSuccess("");
-
     startTransition(async () => {
       const result = await reset(values);
       if (result?.error) {
-        setError(result.error);
+        toast.error(result.error);
       }
       if (result?.success) {
-        setSuccess(result.success);
+        toast.success(result.success);
       }
     });
   };
@@ -73,8 +67,6 @@ export function ResetForm() {
               </FormItem>
             )}
           />
-          {error && <ErrorMessage message={error} />}
-          {success && <SuccessMessage message={success} />}
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending && <Spinner />}
             Reset
