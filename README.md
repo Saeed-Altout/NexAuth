@@ -616,10 +616,7 @@ Built with amazing open-source technologies:
 
 ## 💬 Support
 
-- 📧 **Email:** support@yourproject.com
-- 💬 **Discord:** [Join our community](#)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/yourusername/nexauth/issues)
-- 📖 **Docs:** [Full Documentation](#)
+- 📧 **Email:** saeedaltout25@gmail.com
 
 ---
 
