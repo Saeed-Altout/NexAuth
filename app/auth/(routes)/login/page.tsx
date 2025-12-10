@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
-import { Spinner } from "@/components/ui/spinner";
+import { LoadingPage } from "@/components/loading-page";
 import { LoginForm } from "@/components/auth/login-form";
 
 export default function LoginPage() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<LoadingPage />}>
       <LoginForm />
     </Suspense>
   );

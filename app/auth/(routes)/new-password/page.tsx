@@ -1,11 +1,11 @@
 import { Suspense } from "react";
 
 import { NewPasswordForm } from "@/components/auth/new-password-form";
-import { Spinner } from "@/components/ui/spinner";
+import { LoadingPage } from "@/components/loading-page";
 
 export default function NewPasswordPage() {
   return (
-    <Suspense fallback={<Spinner />}>
+    <Suspense fallback={<LoadingPage />}>
       <NewPasswordForm />
     </Suspense>
   );
