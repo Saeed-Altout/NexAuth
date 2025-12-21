@@ -5,7 +5,7 @@ import { LoginButton } from "@/components/auth/login-button";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
-export default function Home() {
+export default function MarketingPage() {
   const router = useRouter();
   const user = useCurrentUser();
 
