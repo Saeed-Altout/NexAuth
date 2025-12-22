@@ -6,9 +6,9 @@ export default async function MarketingLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div>
+    <>
       <Navbar />
       {children}
-    </div>
+    </>
   );
 }
