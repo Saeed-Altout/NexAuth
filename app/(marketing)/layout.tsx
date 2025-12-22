@@ -1,4 +1,5 @@
 import { Navbar } from "./_components/navbar";
+import { Footer } from "./_components/footer";
 
 export default async function MarketingLayout({
   children,
@@ -8,7 +9,8 @@ export default async function MarketingLayout({
   return (
     <>
       <Navbar />
-      {children}
+      <main className="flex-1">{children}</main>
+      <Footer />
     </>
   );
 }
