@@ -3,68 +3,67 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Marquee } from "@/components/ui/marquee";
 
-// Unique reviews data
 const testimonials = [
   {
-    name: "Ava Green",
-    username: "@ava",
-    body: "Cascade AI made my workflow 10x faster!",
-    img: "https://randomuser.me/api/portraits/women/32.jpg",
-    country: "🇦🇺 Australia",
+    name: "Alex Rivera",
+    username: "@arivera",
+    body: "Fast Auth saved us weeks of development time. It's simply the best.",
+    img: "https://randomuser.me/api/portraits/men/32.jpg",
+    country: "🇸 USA",
   },
   {
-    name: "Ana Miller",
-    username: "@ana",
-    body: "Vertical marquee is a game changer!",
+    name: "Sarah Chen",
+    username: "@schen_dev",
+    body: "The security features are top-notch. I feel safe using this in production.",
     img: "https://randomuser.me/api/portraits/women/68.jpg",
-    country: "🇩🇪 Germany",
+    country: "�� Canada",
   },
   {
-    name: "Mateo Rossi",
-    username: "@mat",
-    body: "Animations are buttery smooth!",
+    name: "Matteo Ricci",
+    username: "@matteo_r",
+    body: "Finally, an auth library that doesn't feel like a black box. Amazing work!",
     img: "https://randomuser.me/api/portraits/men/51.jpg",
     country: "🇮🇹 Italy",
   },
   {
-    name: "Maya Patel",
-    username: "@maya",
-    body: "Setup was a breeze!",
+    name: "Priya Patel",
+    username: "@priya_codes",
+    body: "The TypeScript support is flawless. Every prop is typed perfectly.",
     img: "https://randomuser.me/api/portraits/women/53.jpg",
     country: "🇮🇳 India",
   },
   {
-    name: "Noah Smith",
-    username: "@noah",
-    body: "Best marquee component!",
+    name: "James Wilson",
+    username: "@jwilson",
+    body: "Integrated it into my Next.js app in under 10 minutes. Mind blowing.",
     img: "https://randomuser.me/api/portraits/men/33.jpg",
-    country: "🇺🇸 USA",
+    country: "�� UK",
   },
   {
-    name: "Lucas Stone",
-    username: "@luc",
-    body: "Very customizable and smooth.",
-    img: "https://randomuser.me/api/portraits/men/22.jpg",
+    name: "Louise Dubois",
+    username: "@louise_d",
+    body: "The Prisma adapter makes database management a breeze.",
+    img: "https://randomuser.me/api/portraits/women/22.jpg",
     country: "🇫🇷 France",
   },
   {
-    name: "Haruto Sato",
-    username: "@haru",
-    body: "Impressive performance on mobile!",
+    name: "Kenji Tanaka",
+    username: "@kenji_t",
+    body: "Performance is blazing fast. My users love the login speed.",
     img: "https://randomuser.me/api/portraits/men/85.jpg",
     country: "🇯🇵 Japan",
   },
   {
-    name: "Emma Lee",
-    username: "@emma",
-    body: "Love the pause on hover feature!",
+    name: "Emily Davis",
+    username: "@em_davis",
+    body: "Documentation is super clear and easy to follow. Great job team!",
     img: "https://randomuser.me/api/portraits/women/45.jpg",
-    country: "🇨🇦 Canada",
+    country: "🇺 Australia",
   },
   {
-    name: "Carlos Ray",
-    username: "@carl",
-    body: "Great for testimonials and logos.",
+    name: "Carlos Rodriguez",
+    username: "@carlos_r",
+    body: "Customization is key for me, and Fast Auth delivers on all fronts.",
     img: "https://randomuser.me/api/portraits/men/61.jpg",
     country: "🇪🇸 Spain",
   },
@@ -78,24 +77,24 @@ function TestimonialCard({
   country,
 }: (typeof testimonials)[number]) {
   return (
-    <Card className="w-64">
-      <CardContent>
-        <div className="flex items-center gap-2.5">
-          <Avatar className="size-9">
-            <AvatarImage src={img} alt="@reui_io" />
+    <Card className="w-80 border-none bg-muted/20 hover:bg-muted/40 transition-colors duration-300">
+      <CardContent className="p-6">
+        <div className="flex items-center gap-4 mb-4">
+          <Avatar className="h-10 w-10 border-2 border-background">
+            <AvatarImage src={img} alt={username} />
             <AvatarFallback>{name[0]}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col">
-            <figcaption className="text-sm font-medium text-foreground flex items-center gap-1">
-              {name} <span className="text-xs">{country}</span>
+            <figcaption className="text-sm font-semibold text-foreground flex items-center gap-2">
+              {name} <span className="text-xs opacity-70">{country}</span>
             </figcaption>
             <p className="text-xs font-medium text-muted-foreground">
               {username}
             </p>
           </div>
         </div>
-        <blockquote className="mt-3 text-sm text-econdary-foreground">
-          {body}
+        <blockquote className="text-sm text-muted-foreground leading-relaxed">
+          &quot;{body}&quot;
         </blockquote>
       </CardContent>
     </Card>
@@ -104,24 +103,38 @@ function TestimonialCard({
 
 export function Testimonials() {
   return (
-    <div className="relative flex w-full flex-col items-center justify-center gap-1 overflow-hidden py-8">
-      {/* Marquee moving left to right (default) */}
-      <Marquee pauseOnHover repeat={3} className="[--duration:120s]">
-        {testimonials.map((review) => (
-          <TestimonialCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      {/* Marquee moving right to left (reverse) */}
-      <Marquee pauseOnHover reverse repeat={3} className="[--duration:120s]">
-        {testimonials.map((review) => (
-          <TestimonialCard key={review.username} {...review} />
-        ))}
-      </Marquee>
-      {/* Stylish gradient overlays */}
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-background/95 to-transparent"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-background/95 to-transparent"></div>
-      <div className="pointer-events-none absolute top-0 left-0 w-full h-12 bg-gradient-to-b from-background/90 to-transparent"></div>
-      <div className="pointer-events-none absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-background/90 to-transparent"></div>
-    </div>
+    <section className="py-24 bg-background overflow-hidden">
+      <div className="container px-4 md:px-6 mx-auto mb-12">
+        <div className="flex flex-col items-center text-center space-y-4">
+          <h2 className="text-3xl font-bold tracking-tighter md:text-5xl text-foreground">
+            Loved by developers worldwide
+          </h2>
+          <p className="max-w-[700px] text-muted-foreground text-lg md:text-xl">
+            Join thousands of developers building secure, scalable, and
+            delightful authentication experiences with Fast Auth.
+          </p>
+        </div>
+      </div>
+
+      <div className="relative flex w-full flex-col items-center justify-center gap-6">
+        {/* Marquee moving left to right (default) */}
+        <Marquee pauseOnHover repeat={4} className="[--duration:60s]">
+          {testimonials.slice(0, 5).map((review) => (
+            <TestimonialCard key={review.username} {...review} />
+          ))}
+        </Marquee>
+
+        {/* Marquee moving right to left (reverse) */}
+        <Marquee pauseOnHover reverse repeat={4} className="[--duration:60s]">
+          {testimonials.slice(4).map((review) => (
+            <TestimonialCard key={review.username} {...review} />
+          ))}
+        </Marquee>
+
+        {/* Stylish gradient overlays */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-background via-background/80 to-transparent z-10"></div>
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-1/4 bg-gradient-to-l from-background via-background/80 to-transparent z-10"></div>
+      </div>
+    </section>
   );
 }
